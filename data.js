@@ -1,4 +1,6 @@
-export const graph = {
+import { UpdateState } from "./state";
+
+let graph = {
   nodes: [
     {
       id: "Life",
@@ -512,3 +514,10 @@ export const graph = {
     },
   ],
 };
+
+function setGraph(newGraph) {
+  graph = newGraph;
+  UpdateState();
+}
+
+export { graph, setGraph };

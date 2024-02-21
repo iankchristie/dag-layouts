@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      body {
+        margin: 0;
+      }
+    </style>
+    <link rel="stylesheet" href="index.css" />
+  </head>
+  <body>
+    <script src="https://unpkg.com/d3-dag@1.1.0"></script>
+
+    <script type="module" src="/index.js"></script>
+    <script type="module" src="tangled-tree/tangled-tree-view.js"></script>
+    <script type="module" src="edge-routing.js"></script>
+    <script type="module" src="unconstrained.js"></script>
+    <script type="module" src="constrained.js"></script>
+    <script type="module" src="sugiyama.js"></script>
+    <script type="module" src="zherebko.js"></script>
+    <script type="module" src="grid.js"></script>
+    <script type="module" src="/data.js"></script>
+    <script type="module" src="/3d.js"></script>
+    <select id="options" onchange="menuOptionChanged(this.value)">
+      <option value="tangled-tree">Tangled Tree</option>
+      <option value="edge-routing">Shortest-Path Edge Routing</option>
+      <option value="force-layout">Force Layout Unconstrained</option>
+      <option value="force-layout-downward">Forced Layout Downward</option>
+      <option value="sugiyama">Sugiyama</option>
+      <option value="zherebko">Zherebko</option>
+      <option value="grid">Grid</option>
+      <option value="3d">3D</option>
+    </select>
+    <div id="containers">
+      <div id="tangled-tree-container" style="display: block">
+        <svg id="chart" className="d3-component" width="100%" height="100%">
+          <g id="zoom-container">
+            <g id="link-container" />
+            <g id="node-container" />
+            <path id="drag-line" stroke="red" strokeWidth="3" />
+          </g>
+        </svg>
+      </div>
+      <div id="edge-routing-container" style="display: none"></div>
+      <div id="force-layout-container" style="display: none"></div>
+      <div id="force-layout-downward-container" style="display: none"></div>
+      <div id="sugiyama-container" style="display: none">
+        <svg id="sugiyama-svg">
+          <g transform="translate(2, 2)">
+            <defs id="defs" />
+            <g id="links" />
+            <g id="nodes" />
+            <g id="arrows" />
+          </g>
+        </svg>
+      </div>
+      <div id="zherebko-container" style="display: none">
+        <svg id="zherebko-svg">
+          <g transform="translate(2, 2)">
+            <defs id="defs" />
+            <g id="links" />
+            <g id="nodes" />
+            <g id="arrows" />
+          </g>
+        </svg>
+      </div>
+      <div id="grid-container" style="display: none">
+        <svg id="grid-svg">
+          <g transform="translate(2, 2)">
+            <defs id="defs" />
+            <g id="links" />
+            <g id="nodes" />
+            <g id="arrows" />
+          </g>
+        </svg>
+      </div>
+      <div id="3d-container" style="display: none"></div>
+    </div>
+  </body>
+</html>

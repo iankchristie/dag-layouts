@@ -1,0 +1,13 @@
+{
+  "dependencies": {
+    "@types/d3": "^7.4.3",
+    "d3": "^7.8.5",
+    "d3-dag": "^1.1.0",
+    "three": "^0.161.0",
+    "typescript": "^5.3.3",
+    "webcola": "^3.4.0"
+  },
+  "devDependencies": {
+    "vite": "^5.1.1"
+  }
+}

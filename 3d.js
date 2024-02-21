@@ -5,9 +5,14 @@ import {
   CSS2DObject,
 } from "three/addons/renderers/CSS2DRenderer.js";
 import { Layout3D } from "webcola";
-import { graph } from "./data";
 
 var addConstraints = false;
+var layout = null;
+var graphCache = null;
+var nodes = [];
+var labels = [];
+var edges = [];
+var graphObject = null;
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(
@@ -47,62 +52,6 @@ scene.add(directionalLight);
 
 camera.position.z = 5;
 
-graph.nodes = graph.nodes.map((n, i) => {
-  return {
-    id: i,
-    name: n.name,
-    value: {
-      label: n.name,
-    },
-  };
-});
-
-graph.links = graph.edges.map((e) => {
-  return {
-    source: graph.nodes.find((node) => node.name === e.from).id,
-    target: graph.nodes.find((node) => node.name === e.to).id,
-    value: 1,
-  };
-});
-
-const constraints = graph.links.map((e) => {
-  return { axis: "y", left: e.target, right: e.source, gap: 20 };
-});
-
-const graphObject = new THREE.Object3D();
-
-var layout = new Layout3D(graph.nodes, graph.links, 4);
-if (addConstraints) {
-  layout.constraints = constraints;
-}
-layout.start(10);
-
-const nodes = graph.nodes.map((n) => {
-  return new THREE.Mesh(geometry, material);
-});
-
-const labels = nodes.map((node, i) => {
-  return getLabel(node, graph.nodes[i].name);
-});
-
-const edges = graph.links.map((e) => {
-  return makeCylinder();
-});
-
-nodes.forEach((node) => {
-  graphObject.add(node);
-});
-
-labels.forEach((label) => {
-  graphObject.add(label);
-});
-
-edges.forEach((edge) => {
-  graphObject.add(edge);
-});
-
-scene.add(graphObject);
-
 window.addEventListener("resize", onWindowResize, false);
 function onWindowResize() {
   camera.aspect = window.innerWidth / window.innerHeight;
@@ -115,13 +64,15 @@ function onWindowResize() {
 var delta = Number.POSITIVE_INFINITY;
 var converged = false;
 function animate() {
-  var s = converged ? 0 : layout.tick();
-  if (s != 0 && Math.abs(Math.abs(delta / s) - 1) > 1e-7) {
-    delta = s;
-    updateNodePositions(layout.result);
-    updateEdgePositions();
-  } else {
-    converged = true;
+  if (layout) {
+    var s = converged ? 0 : layout.tick();
+    if (s != 0 && Math.abs(Math.abs(delta / s) - 1) > 1e-7) {
+      delta = s;
+      updateNodePositions(layout.result);
+      updateEdgePositions();
+    } else {
+      converged = true;
+    }
   }
 
   requestAnimationFrame(animate);
@@ -166,7 +117,7 @@ function updateNodePositions(coords) {
 }
 
 function updateEdgePositions() {
-  graph.links.forEach((e, i) => {
+  graphCache.links.forEach((e, i) => {
     const edge = edges[i];
     const parent = nodes[e.source];
     const child = nodes[e.target];
@@ -185,3 +136,79 @@ function makeCylinder() {
   o.scale.set(0.1, 0.1, 1);
   return o;
 }
+
+export const update3D = function (graph) {
+  if (graphObject) {
+    graphObject.children.forEach((c) => {
+      if (c.isCSS2DObject) {
+        graphObject.remove(c);
+      }
+    });
+    for (var i = graphObject.children.length - 1; i >= 0; i--) {
+      var c = graphObject.children[i];
+      if (c.isCSS2DObject) {
+        graphObject.remove(c);
+      }
+    }
+
+    scene.remove(graphObject);
+  }
+
+  graph.nodes = graph.nodes.map((n, i) => {
+    return {
+      id: i,
+      name: n.name,
+      value: {
+        label: n.name,
+      },
+    };
+  });
+
+  graph.links = graph.edges.map((e) => {
+    return {
+      source: graph.nodes.find((node) => node.name === e.from).id,
+      target: graph.nodes.find((node) => node.name === e.to).id,
+      value: 1,
+    };
+  });
+
+  const constraints = graph.links.map((e) => {
+    return { axis: "y", left: e.target, right: e.source, gap: 20 };
+  });
+
+  graphCache = graph;
+
+  graphObject = new THREE.Object3D();
+
+  layout = new Layout3D(graph.nodes, graph.links, 4);
+  if (addConstraints) {
+    layout.constraints = constraints;
+  }
+  layout.start(10);
+
+  nodes = graph.nodes.map((n) => {
+    return new THREE.Mesh(geometry, material);
+  });
+
+  labels = nodes.map((node, i) => {
+    return getLabel(node, graph.nodes[i].name);
+  });
+
+  edges = graph.links.map((e) => {
+    return makeCylinder();
+  });
+
+  nodes.forEach((node) => {
+    graphObject.add(node);
+  });
+
+  labels.forEach((label) => {
+    graphObject.add(label);
+  });
+
+  edges.forEach((edge) => {
+    graphObject.add(edge);
+  });
+
+  scene.add(graphObject);
+};

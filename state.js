@@ -6,6 +6,7 @@ import { updateSugiyama } from "./sugiyama";
 import { updateTangledTreeView } from "./tangled-tree/tangled-tree-view";
 import { updateUnconstrained } from "./unconstrained";
 import { updateGrid } from "./grid";
+import { update3D } from "./3d";
 
 export function UpdateState() {
   window.updateSelectedNode();
@@ -16,6 +17,7 @@ export function UpdateState() {
   updateSugiyama(clone(graph));
   updateZherebko(clone(graph));
   updateGrid(clone(graph));
+  update3D(clone(graph));
 }
 
 function clone(obj) {

@@ -1,14 +1,13 @@
 export const newGraph = () => {
   const nodes = [
     { id: "Life", name: "Life", description: "This is it", done: false },
-    { id: "n1", name: "n1", description: "node 1", done: false },
-    { id: "n2", name: "n2", description: "node 2", done: false },
+    { id: "example1", name: "example1", description: "node 1", done: false },
+    { id: "example2", name: "example2", description: "node 2", done: false },
   ];
 
   const edges = [
-    { from: "Life", to: "n1" },
-    { from: "n1", to: "n2" },
-    { from: "Life", to: "n2" },
+    { from: "Life", to: "example1" },
+    { from: "Life", to: "example2" },
   ];
 
   return {

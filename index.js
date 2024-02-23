@@ -21,6 +21,14 @@ const hideAll = function () {
   }
 };
 
+var selectedNode = "Life";
+const typeaheadInstance = typeahead({
+  input: document.getElementById("new-child"),
+  source: {
+    local: [],
+  },
+});
+
 window.updateSelectedNode = (nodeId) => {
   if (nodeId) {
     selectedNode = nodeId;
@@ -32,12 +40,11 @@ window.updateSelectedNode = (nodeId) => {
     return n.id;
   });
   // for type ahead if i could get it to work
-  //   const ancestors = getAncestors(graph, selectedNode);
-  //   ancestors.add(selectedNode);
-  //   const reachableNodes = allNodes.filter((node) => !ancestors.has(node));
-  //   if (typeaheadInstance) {
-  //     typeaheadInstance.destroy();
-  //   }
+  const ancestors = getAncestors(graph, selectedNode);
+  ancestors.add(selectedNode);
+  const reachableNodes = allNodes.filter((node) => !ancestors.has(node));
+  typeaheadInstance.reset();
+  typeaheadInstance.addToIndex(reachableNodes);
 };
 
 const updateParents = function (nodeId) {
@@ -98,4 +105,5 @@ window.deleteNode = () => {
   }
   const newGraph = deleteNodeGraph(graph, selectedNode);
   setGraph(newGraph);
+  window.updateSelectedNode("Life");
 };

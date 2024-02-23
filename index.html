@@ -5,10 +5,16 @@
     <link rel="stylesheet" href="index.css" />
   </head>
   <body>
-    <script type="module" src="/data.js"></script>
-    <script type="module" src="/index.js"></script>
-    <script type="module" src="/state.js"></script>
-    <script type="module" src="/3d.js"></script>
+    <link
+      rel="stylesheet"
+      href="./node_modules/typeahead-standalone/dist/basic.css"
+    />
+    <script src="./node_modules/typeahead-standalone/dist/typeahead-standalone.umd.js"></script>
+
+    <script type="module" src="./data.js"></script>
+    <script type="module" src="./index.js"></script>
+    <script type="module" src="./state.js"></script>
+    <script type="module" src="./3d.js"></script>
 
     <div id="sidebar">
       <div id="name">Name:</div>
@@ -19,7 +25,7 @@
       <div id="children">
         Children:
         <ul id="children-list"></ul>
-        <input id="new-child" type="text" placeholder="Name" />
+        <input type="search" id="new-child" placeholder="Name" />
         <button onclick="addChild()">Submit</button>
       </div>
       <button onclick="deleteNode()">Delete Node</button>

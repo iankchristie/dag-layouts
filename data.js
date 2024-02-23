@@ -1,5 +1,5 @@
-import { newGraph } from "./Graph";
-import { UpdateState } from "./state";
+import { newGraph } from "./Graph.js";
+import { UpdateState } from "./state.js";
 
 // {
 //   nodes: [

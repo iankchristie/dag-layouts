@@ -1,12 +1,12 @@
-import { updateZherebko } from "zherebko";
-import { updateConstrained } from "constrained";
-import { graph } from "data";
-import { updateEdgeRouting } from "edge-routing";
-import { updateSugiyama } from "sugiyama";
-import { updateTangledTreeView } from "tangled-tree/tangled-tree-view";
-import { updateUnconstrained } from "unconstrained";
-import { updateGrid } from "grid";
-import { update3D } from "3d";
+import { updateZherebko } from "/zherebko";
+import { updateConstrained } from "/constrained";
+import { graph } from "/data";
+import { updateEdgeRouting } from "/edge-routing";
+import { updateSugiyama } from "/sugiyama";
+import { updateTangledTreeView } from "/tangled-tree/tangled-tree-view";
+import { updateUnconstrained } from "/unconstrained";
+import { updateGrid } from "/grid";
+import { update3D } from "/3d";
 
 export function UpdateState() {
   window.updateSelectedNode();
